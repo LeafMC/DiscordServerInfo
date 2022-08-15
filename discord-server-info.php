@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use Atakde\DiscordWebhook\Message\EmbedMessage;
 use Atakde\DiscordWebhook\Message\MessageFactory;
+use Atakde\DiscordWebhook\Message\TextMessage;
 
 include __DIR__ . '/vendor/autoload.php';
 
@@ -14,15 +16,19 @@ function main(): void {
 function sendWebhook($webhookUrl, $host, $port): void {
     $queryResult = query($host, (int)$port);
 
-    /** @var \Atakde\DiscordWebhook\Message\EmbedMessage $embed */
+    /** @var EmbedMessage $embed */
     $embed = MessageFactory::create('embed');
     $embed
-        ->setTitle(":desktop: There are {$queryResult["Players"]} players playing on the server.\n:arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n:sparkles: Join the fun at kawaismp.ddns.net 19132");
+        ->setTitle(
+            ":desktop: There are {$queryResult["Players"]} players playing on the server.\n
+            :arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n
+            :sparkles: Join the fun at kawaismp.ddns.net 19132"
+        );
 
     send($webhookUrl, $embed);
 }
 
-function send($webhookUrl, \Atakde\DiscordWebhook\Message\TextMessage|\Atakde\DiscordWebhook\Message\EmbedMessage $message): void {
+function send($webhookUrl, TextMessage|EmbedMessage $message): void {
     $ch = curl_init($webhookUrl);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $message->toJson());
     curl_setopt($ch, CURLOPT_POST, true);
