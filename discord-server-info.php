@@ -14,12 +14,19 @@ function main(): void {
 }
 
 function sendWebhook($webhookUrl, $host, $port): void {
-    $queryResult = query($host, (int)$port);
+    try {
+        $queryResult = query($host, (int)$port);
+    } catch (\RuntimeException) {
+        $queryResult = null;
+    }
 
     /** @var EmbedMessage $embed */
     $embed = MessageFactory::create('embed');
-    $embed
-        ->setTitle(":desktop: There are {$queryResult["Players"]} players playing on the server.\n:arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n:sparkles: Join the fun at kawaismp.ddns.net 19132");
+    if ($queryResult === null) {
+        $embed->setTitle(":octagonal_sign: Server kawaismp.ddns.net is offline");
+    } else {
+        $embed->setTitle(":desktop: There are {$queryResult["Players"]} players playing on the server.\n:arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n:sparkles: Join the fun at kawaismp.ddns.net 19132");
+    }
 
     send($webhookUrl, $embed);
 }
