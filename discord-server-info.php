@@ -19,11 +19,7 @@ function sendWebhook($webhookUrl, $host, $port): void {
     /** @var EmbedMessage $embed */
     $embed = MessageFactory::create('embed');
     $embed
-        ->setTitle(
-            ":desktop: There are {$queryResult["Players"]} players playing on the server.\n
-            :arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n
-            :sparkles: Join the fun at kawaismp.ddns.net 19132"
-        );
+        ->setTitle(":desktop: There are {$queryResult["Players"]} players playing on the server.\n:arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n:sparkles: Join the fun at kawaismp.ddns.net 19132");
 
     send($webhookUrl, $embed);
 }
