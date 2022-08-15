@@ -10,10 +10,10 @@ include __DIR__ . '/vendor/autoload.php';
 
 function main(): void {
     $opts = getopt("", ["webhookUrl:"]);
-    sendWebhook($opts["webhookUrl"], "kawaismp.ddns.net", 19132);
+    create_webhook($opts["webhookUrl"], "kawaismp.ddns.net", 19132);
 }
 
-function sendWebhook($webhookUrl, $host, $port): void {
+function create_webhook($webhookUrl, $host, $port): void {
     try {
         $queryResult = query($host, (int)$port);
     } catch (\RuntimeException) {
@@ -28,10 +28,10 @@ function sendWebhook($webhookUrl, $host, $port): void {
         $embed->setTitle(":desktop: There are {$queryResult["Players"]} players playing on the server.\n:arrow_up_small: Vote the server at https://bit.ly/kawaismpvote\n:sparkles: Join the fun at kawaismp.ddns.net 19132");
     }
 
-    send($webhookUrl, $embed);
+    send_webhook($webhookUrl, $embed);
 }
 
-function send($webhookUrl, TextMessage|EmbedMessage $message): void {
+function send_webhook($webhookUrl, TextMessage|EmbedMessage $message): void {
     $ch = curl_init($webhookUrl);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $message->toJson());
     curl_setopt($ch, CURLOPT_POST, true);

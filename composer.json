@@ -1,5 +1,6 @@
 {
     "require": {
-        "atakde/discord-webhook-php": "^1.0"
+        "atakde/discord-webhook-php": "^1.0",
+        "ext-curl": "*"
     }
 }
