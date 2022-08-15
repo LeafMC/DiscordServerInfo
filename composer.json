@@ -1,0 +1,5 @@
+{
+    "require": {
+        "atakde/discord-webhook-php": "^1.0"
+    }
+}

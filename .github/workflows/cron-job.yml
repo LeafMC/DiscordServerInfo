@@ -1,0 +1,31 @@
+name: Cron Job
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    # Lines below let you run workflow manually and on each commit
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Run discord server info
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          ini-values: phar.readonly=0
+
+      - name: Install Composer
+        run: curl -sS https://getcomposer.org/installer | php
+
+      - name: Install Composer dependencies
+        run: php composer.phar install --no-dev --classmap-authoritative --prefer-dist --no-interaction
+
+      - name: Send discord webhook
+        run: php discord-server-info.php --webhookUrl ${{ secrets.WEBHOOK_URL }}
